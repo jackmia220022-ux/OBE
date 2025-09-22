@@ -1076,8 +1076,17 @@ function calculateCourseOutcomeAchievement(enrolment, courseOutcomeId) {
         if (!assessment || assessment.courseId !== enrolment.courseId) {
             return;
         }
-        const weight = mapping.weight && mapping.weight > 0 ? mapping.weight / 100 : 1;
         const markEntry = data.marks.find(entry => entry.enrolmentId === enrolment.id && entry.assessmentId === assessment.id);
+        const rawWeight = Number(mapping.weight);
+        if (!Number.isFinite(rawWeight)) {
+            totalWeightedMax += assessment.maxMarks;
+            totalWeightedScore += markEntry ? markEntry.marks : 0;
+            return;
+        }
+        if (rawWeight <= 0) {
+            return;
+        }
+        const weight = rawWeight / 100;
         totalWeightedMax += assessment.maxMarks * weight;
         totalWeightedScore += (markEntry ? markEntry.marks : 0) * weight;
     });
@@ -1112,7 +1121,15 @@ function calculateProgramOutcomeAchievementForStudent(studentId, programOutcomeI
             .filter(value => value !== null);
         if (attainments.length === 0) return;
         const average = attainments.reduce((sum, value) => sum + value, 0) / attainments.length;
-        const weight = mapping.weight && mapping.weight > 0 ? mapping.weight : 100;
+        const weight = Number(mapping.weight);
+        if (!Number.isFinite(weight)) {
+            totalWeight += 100;
+            weightedSum += average * 100;
+            return;
+        }
+        if (weight <= 0) {
+            return;
+        }
         totalWeight += weight;
         weightedSum += average * weight;
     });
