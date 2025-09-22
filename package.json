@@ -1,0 +1,19 @@
+{
+  "name": "obe-portal",
+  "version": "1.0.0",
+  "description": "Outcome Based Education management portal with Node.js backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "obe",
+    "education",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

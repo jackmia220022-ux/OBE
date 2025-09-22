@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBE Management Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <h1>Outcome Based Education Management</h1>
+        <p class="subtitle">Unified workspace for program, course, assessment and achievement tracking</p>
+    </header>
+
+    <nav class="app-nav">
+        <button data-section="dashboard" class="active">Dashboard</button>
+        <button data-section="basic-setup">Basic Setups</button>
+        <button data-section="courses">Course Entry</button>
+        <button data-section="students">Student Entry</button>
+        <button data-section="enrolments">Enrolment Entry</button>
+        <button data-section="program-outcomes">Program Outcomes</button>
+        <button data-section="course-outcomes">Course Outcomes</button>
+        <button data-section="co-po-mapping">CO-PO Mapping</button>
+        <button data-section="assessments">Assessment Setup</button>
+        <button data-section="assessment-co">Assessment-CO Mapping</button>
+        <button data-section="marks">Mark Uploading</button>
+        <button data-section="mark-view">Mark View</button>
+        <button data-section="co-achievement-student">CO Achievement (Student)</button>
+        <button data-section="co-achievement-semester">CO Achievement (Semester)</button>
+        <button data-section="po-achievement-student">PO Achievement (Student)</button>
+        <button data-section="po-achievement-semester">PO Achievement (Semester)</button>
+        <button data-section="po-co-report">PO-CO Report</button>
+        <button data-section="course-report">Course CQI Reports</button>
+    </nav>
+
+    <main>
+        <section id="dashboard" class="active">
+            <div class="intro">
+                <h2>Welcome to the OBE Management Portal</h2>
+                <p>Use the navigation to manage programs, courses, outcomes, assessments, and achievement reports. The workspace stores data locally in your browser so you can prototype your OBE workflows instantly without server setup.</p>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Program Planning</h3>
+                        <p>Define academic programs, semesters, and program outcomes. Build alignment between course outcomes and program expectations.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Assessment Tracking</h3>
+                        <p>Configure course assessments, map them to course outcomes, and upload marks for enrolled students.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Achievement Analytics</h3>
+                        <p>Generate course outcome and program outcome achievement reports for individuals, courses, and semesters.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="basic-setup">
+            <h2>Basic Setups</h2>
+            <div class="section-grid">
+                <div class="card">
+                    <h3>Add Program</h3>
+                    <form id="program-form" class="form-grid">
+                        <label>Program Code<input type="text" name="code" required></label>
+                        <label>Program Name<input type="text" name="name" required></label>
+                        <label>Description<textarea name="description" rows="3"></textarea></label>
+                        <button type="submit">Save Program</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3>Add Semester</h3>
+                    <form id="semester-form" class="form-grid">
+                        <label>Semester Name<input type="text" name="name" required></label>
+                        <label>Sequence<input type="number" name="sequence" min="1" required></label>
+                        <button type="submit">Save Semester</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Programs</h3>
+                <table id="program-table" class="data-table"></table>
+            </div>
+            <div class="card">
+                <h3>Semesters</h3>
+                <table id="semester-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="courses">
+            <h2>Course Entry</h2>
+            <div class="card">
+                <form id="course-form" class="form-grid">
+                    <label>Course Code<input type="text" name="code" required></label>
+                    <label>Course Name<input type="text" name="name" required></label>
+                    <label>Program<select name="programId" required></select></label>
+                    <label>Semester<select name="semesterId" required></select></label>
+                    <label>Credit Value<input type="number" name="credits" min="0" step="0.5" required></label>
+                    <button type="submit">Save Course</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="course-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="students">
+            <h2>Student Entry</h2>
+            <div class="card">
+                <form id="student-form" class="form-grid">
+                    <label>Student ID<input type="text" name="studentId" required></label>
+                    <label>Full Name<input type="text" name="name" required></label>
+                    <label>Email<input type="email" name="email"></label>
+                    <label>Program<select name="programId" required></select></label>
+                    <button type="submit">Save Student</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="student-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="enrolments">
+            <h2>Enrolment Entry</h2>
+            <div class="card">
+                <form id="enrolment-form" class="form-grid">
+                    <label>Student<select name="studentId" required></select></label>
+                    <label>Course<select name="courseId" required></select></label>
+                    <label>Semester<select name="semesterId" required></select></label>
+                    <label>Academic Year<input type="text" name="year" placeholder="2024-2025" required></label>
+                    <button type="submit">Save Enrolment</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="enrolment-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="program-outcomes">
+            <h2>Program Outcome Setup</h2>
+            <div class="card">
+                <form id="program-outcome-form" class="form-grid">
+                    <label>Program<select name="programId" required></select></label>
+                    <label>Outcome Code<input type="text" name="code" required></label>
+                    <label>Description<textarea name="description" rows="3" required></textarea></label>
+                    <button type="submit">Save Program Outcome</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="program-outcome-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="course-outcomes">
+            <h2>Course Outcome Setup</h2>
+            <div class="card">
+                <form id="course-outcome-form" class="form-grid">
+                    <label>Course<select name="courseId" required></select></label>
+                    <label>Outcome Code<input type="text" name="code" required></label>
+                    <label>Description<textarea name="description" rows="3" required></textarea></label>
+                    <button type="submit">Save Course Outcome</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="course-outcome-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="co-po-mapping">
+            <h2>CO-PO Mapping</h2>
+            <div class="card">
+                <form id="co-po-form" class="form-grid">
+                    <label>Course Outcome<select name="courseOutcomeId" required></select></label>
+                    <label>Program Outcome<select name="programOutcomeId" required></select></label>
+                    <label>Weight (%)<input type="number" name="weight" min="0" max="100" value="100" required></label>
+                    <button type="submit">Save Mapping</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="co-po-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="assessments">
+            <h2>Assessment Setup</h2>
+            <div class="card">
+                <form id="assessment-form" class="form-grid">
+                    <label>Course<select name="courseId" required></select></label>
+                    <label>Assessment Name<input type="text" name="name" required></label>
+                    <label>Type<input type="text" name="type" placeholder="Quiz, Midterm, Final" required></label>
+                    <label>Max Marks<input type="number" name="maxMarks" min="0" required></label>
+                    <label>Semester<select name="semesterId" required></select></label>
+                    <button type="submit">Save Assessment</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="assessment-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="assessment-co">
+            <h2>Assessment - Course Outcome Mapping</h2>
+            <div class="card">
+                <form id="assessment-co-form" class="form-grid">
+                    <label>Assessment<select name="assessmentId" required></select></label>
+                    <label>Course Outcome<select name="courseOutcomeId" required></select></label>
+                    <label>Contribution (%)<input type="number" name="weight" min="0" max="100" value="100" required></label>
+                    <button type="submit">Save Mapping</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="assessment-co-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="marks">
+            <h2>Mark Uploading</h2>
+            <div class="card">
+                <form id="mark-form" class="form-grid">
+                    <label>Course<select name="courseId" required></select></label>
+                    <label>Assessment<select name="assessmentId" required></select></label>
+                    <label>Student<select name="enrolmentId" required></select></label>
+                    <label>Marks Obtained<input type="number" name="marks" min="0" step="0.01" required></label>
+                    <button type="submit">Save Marks</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="mark-table" class="data-table"></table>
+            </div>
+        </section>
+
+        <section id="mark-view">
+            <h2>Mark View</h2>
+            <div class="card">
+                <form id="mark-view-filter" class="filter-grid">
+                    <label>Course<select name="courseId"></select></label>
+                    <button type="submit">View Marks</button>
+                </form>
+                <div id="mark-view-content" class="scrollable"></div>
+            </div>
+        </section>
+
+        <section id="co-achievement-student">
+            <h2>CO Achievement Report (Per Student)</h2>
+            <div class="card">
+                <form id="co-student-filter" class="filter-grid">
+                    <label>Student<select name="studentId" required></select></label>
+                    <label>Course<select name="courseId" required></select></label>
+                    <button type="submit">Generate Report</button>
+                </form>
+                <div id="co-student-report" class="scrollable"></div>
+            </div>
+        </section>
+
+        <section id="co-achievement-semester">
+            <h2>CO Achievement Report (Per Semester)</h2>
+            <div class="card">
+                <form id="co-semester-filter" class="filter-grid">
+                    <label>Course<select name="courseId" required></select></label>
+                    <label>Semester<select name="semesterId" required></select></label>
+                    <button type="submit">Generate Report</button>
+                </form>
+                <div id="co-semester-report" class="scrollable"></div>
+            </div>
+        </section>
+
+        <section id="po-achievement-student">
+            <h2>PO Achievement Report (Per Student)</h2>
+            <div class="card">
+                <form id="po-student-filter" class="filter-grid">
+                    <label>Student<select name="studentId" required></select></label>
+                    <button type="submit">Generate Report</button>
+                </form>
+                <div id="po-student-report" class="scrollable"></div>
+            </div>
+        </section>
+
+        <section id="po-achievement-semester">
+            <h2>PO Achievement Report (Per Semester)</h2>
+            <div class="card">
+                <form id="po-semester-filter" class="filter-grid">
+                    <label>Program<select name="programId" required></select></label>
+                    <label>Semester<select name="semesterId" required></select></label>
+                    <button type="submit">Generate Report</button>
+                </form>
+                <div id="po-semester-report" class="scrollable"></div>
+            </div>
+        </section>
+
+        <section id="po-co-report">
+            <h2>PO-CO Mapping Report</h2>
+            <div class="card">
+                <form id="po-co-filter" class="filter-grid">
+                    <label>Program<select name="programId" required></select></label>
+                    <button type="submit">Generate Mapping</button>
+                </form>
+                <div id="po-co-content" class="scrollable"></div>
+            </div>
+        </section>
+
+        <section id="course-report">
+            <h2>Course Report Entry for CQI</h2>
+            <div class="card">
+                <form id="course-report-form" class="form-grid">
+                    <label>Course<select name="courseId" required></select></label>
+                    <label>Semester<select name="semesterId" required></select></label>
+                    <label>Academic Year<input type="text" name="year" placeholder="2024-2025" required></label>
+                    <label>Summary<textarea name="summary" rows="3" required></textarea></label>
+                    <label>Improvement Actions<textarea name="actions" rows="3" required></textarea></label>
+                    <button type="submit">Save Course Report</button>
+                </form>
+            </div>
+            <div class="card">
+                <table id="course-report-table" class="data-table"></table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>Data is stored locally in your browser. Export functionality can be added by extending <code>app.js</code>.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
